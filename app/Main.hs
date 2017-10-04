@@ -1,3 +1,5 @@
+module Main where
+
 import System.Console.GetOpt
 import Text.Read
 import System.Environment
@@ -78,7 +80,7 @@ blockMode p = let chars = length p * (length (head p) + 2) + 9 in
 
 program :: [String] -> IO ([String], Int)
 program [a, b] = fmap (\c -> (lines c, read b)) (readFile a)
-program [a] = fmap (\c -> (lines c, 300000)) (readFile a)
-program _ = fmap (\c -> (lines c, 3000000)) getContents
+program [a] = fmap (\c -> (lines c, 100000)) (readFile a)
+program _ = fmap (\c -> (lines c, 100000)) getContents
 
 main = getArgs >>= program >>= (\(p, delay) -> blockMode p >> life p delay)
