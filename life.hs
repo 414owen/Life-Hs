@@ -36,6 +36,7 @@ zeroMat lsts = map (map (const 0)) lsts
 wraps :: [a] -> [a]
 wraps lst = last lst : lst
 
+neighboursInt :: [Char] -> [Int]
 neighboursInt (a:aa:as) = xToNum a + xToNum aa : neighboursInt (aa:as)
 neighboursInt (a:[]) = []
 neighboursInt _ = []
