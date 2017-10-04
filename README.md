@@ -58,7 +58,7 @@ Insert the rightmost column to the left
 
 ### Step Two
 
-Insert the bottommost column at the top
+Insert the bottommost row at the top
 
 ```
 -------------------------------------------
