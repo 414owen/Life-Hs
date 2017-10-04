@@ -1,13 +1,11 @@
 module Main where
 
-import System.Console.GetOpt
-import Text.Read
-import System.Environment
-import Data.List
-import System.IO
 import Control.Concurrent
+import Data.List
 import Debug.Trace
 import System.Console.ANSI
+import System.Environment
+import System.IO
 
 rotate :: [[a]] -> [[a]]
 rotate = reverse . transpose
