@@ -36,13 +36,13 @@ zeroMat lsts = map (map (const 0)) lsts
 wraps :: [a] -> [a]
 wraps lst = last lst : lst
 
-neighboursInt (a:aa:as) bs = xToNum a + xToNum aa : neighboursInt (aa:as) bs
-neighboursInt (a:[]) _ = []
-neighboursInt _ _ = []
+neighboursInt (a:aa:as) = xToNum a + xToNum aa : neighboursInt (aa:as)
+neighboursInt (a:[]) = []
+neighboursInt _ = []
 
 -- Takes displaced rows list
 countNeighbours :: [[Char]] -> [[Int]]
-countNeighbours lsts = zipWith neighboursInt lsts lsts
+countNeighbours lsts = map neighboursInt lsts
 
 -- [[1, 2, 3], [2, 3, 4], [3, 4, 5]] ->
 -- [[5, 3, 4, 5], [3, 1, 2, 3], [4, 2, 3, 4], [5, 3, 4, 5]]
