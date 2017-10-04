@@ -65,7 +65,7 @@ tick :: [[Char]] -> [[Char]]
 tick lsts = nextBoard lsts (neighbours lsts)
 
 life :: [[Char]] -> IO ()
-life lsts = threadDelay 500000 >> clearScreen >> mapM_ putStrLn lsts >> life (tick lsts)
+life lsts = threadDelay 500000 >> clearScreen >> putStrLn (intercalate "\n" lsts) >> life (tick lsts)
 
 program :: IO [[Char]]
 program = fmap lines (readFile "test.life")
