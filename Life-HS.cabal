@@ -2,10 +2,10 @@ name:                Life-HS
 version:             0.1.0.0
 synopsis:            Conway's Game of Life
 -- description:
-homepage:            https://github.com/414owen/Life-HS
+homepage:            https://github.com/414owen/Life-Hs
 license:             BSD3
 author:              Owen Shepherd
-maintainer:          414owen@gmail.cim
+maintainer:          414owen@gmail.com
 copyright:           2017 Owen Shepherd
 category:            Web
 build-type:          Simple
@@ -22,4 +22,4 @@ executable Life
 
 source-repository head
   type:     git
-  location: https://github.com/414owen/Life-HS
+  location: https://github.com/414owen/Life-Hs
