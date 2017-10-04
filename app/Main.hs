@@ -23,8 +23,7 @@ add2d = zipWith (zipWith (+))
 
 alive :: Char -> Int -> Char
 alive 'x' n | n == 2 = 'x'
-alive 'x' n | n == 3 = 'x'
-alive '.' n | n == 3 = 'x'
+alive  _  n | n == 3 = 'x'
 alive  _  _          = '.'
 
 nextBoard :: [String] -> [[Int]] -> [String]
@@ -59,14 +58,16 @@ neighbours :: [String] -> [[Int]]
 neighbours lsts = let rots = rotations lsts [0..3]
                       rotationShifts = map shiftRows rots -- [[String]]
                       neighbourRots = map countNeighbours rotationShifts
-                      neighboursUnRot = zipWith (flip rotateN) neighbourRots [0, 3, 2, 1]
+                      neighboursUnRot = zipWith (flip rotateN)
+                          neighbourRots [0, 3, 2, 1]
                   in foldl add2d (zeroMat lsts) neighboursUnRot
 
 tick :: [String] -> [String]
 tick lsts = nextBoard lsts (neighbours lsts)
 
 life :: [String] -> Int -> IO ()
-life lsts delay = threadDelay delay >> clearScreen >> putStrLn (intercalate "\n" lsts) >> hFlush stdout >> life (tick lsts) delay
+life lsts delay = threadDelay delay >> clearScreen >>
+    putStrLn (intercalate "\n" lsts) >> hFlush stdout >> life (tick lsts) delay
 
 blockMode :: [String] -> IO ()
 blockMode p = let chars = length p * (length (head p) + 2) + 9 in
