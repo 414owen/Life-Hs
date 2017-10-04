@@ -1,3 +1,6 @@
+import System.Console.GetOpt
+import Text.Read
+import System.Environment
 import Data.List
 import System.IO
 import Control.Concurrent
@@ -66,14 +69,16 @@ neighbours lsts = let rots = rotations lsts [0..3]
 tick :: [[Char]] -> [[Char]]
 tick lsts = nextBoard lsts (neighbours lsts)
 
-life :: [[Char]] -> IO ()
-life lsts = threadDelay 100000 >> clearScreen >> putStrLn (intercalate "\n" lsts) >> hFlush stdout >> life (tick lsts)
-
-program :: IO [[Char]]
-program = fmap lines (readFile "test.life")
+life :: [[Char]] -> Int -> IO ()
+life lsts delay = threadDelay delay >> clearScreen >> putStrLn (intercalate "\n" lsts) >> hFlush stdout >> life (tick lsts) delay
 
 blockMode :: [[Char]] -> IO ()
 blockMode p = let chars = length p * (length (head p) + 2) + 9 in
     hSetBuffering stdout (BlockBuffering (Just chars))
 
-main = program >>= (\p -> blockMode p >> life p)
+program :: [String] -> IO ([String], Int)
+program [a, b] = fmap (\c -> (lines c, read b)) (readFile a)
+program [a] = fmap (\c -> (lines c, 300000)) (readFile a)
+program _ = fmap (\c -> (lines c, 3000000)) getContents
+
+main = getArgs >>= program >>= (\(p, delay) -> blockMode p >> life p delay)
