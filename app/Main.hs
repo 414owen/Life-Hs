@@ -60,8 +60,7 @@ neighbours lsts = let rots = rotations lsts [0..3]
                       rotationShifts = map shiftRows rots -- [[String]]
                       neighbourRots = map countNeighbours rotationShifts
                       neighboursUnRot = zipWith (flip rotateN) neighbourRots [0, 3, 2, 1]
-                      neighbours = foldl add2d (zeroMat lsts) neighboursUnRot
-                  in neighbours
+                  in foldl add2d (zeroMat lsts) neighboursUnRot
 
 tick :: [String] -> [String]
 tick lsts = nextBoard lsts (neighbours lsts)
