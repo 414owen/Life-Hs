@@ -18,9 +18,6 @@ rotateN n lsts = rotateN (n - 1) (rotate lsts)
 xToNum :: Char -> Int
 xToNum x = if x == 'x' then 1 else 0
 
-lifeCount (a:b:xs) = (xToNum a) : lifeCount (b:xs)
-lifeCount _ = []
-
 add2d :: Num a => [[a]] -> [[a]] -> [[a]]
 add2d lsts1 lsts2 = zipWith (zipWith (+)) lsts1 lsts2
 
