@@ -1,4 +1,5 @@
 import Data.List
+import System.IO
 import Control.Concurrent
 import Debug.Trace
 import System.Console.ANSI
@@ -66,9 +67,13 @@ tick :: [[Char]] -> [[Char]]
 tick lsts = nextBoard lsts (neighbours lsts)
 
 life :: [[Char]] -> IO ()
-life lsts = threadDelay 500000 >> clearScreen >> putStrLn (intercalate "\n" lsts) >> life (tick lsts)
+life lsts = threadDelay 100000 >> clearScreen >> putStrLn (intercalate "\n" lsts) >> hFlush stdout >> life (tick lsts)
 
 program :: IO [[Char]]
 program = fmap lines (readFile "test.life")
 
-main = program >>= life
+blockMode :: [[Char]] -> IO ()
+blockMode p = let chars = length p * (length (head p) + 2) + 9 in
+    hSetBuffering stdout (BlockBuffering (Just chars))
+
+main = program >>= (\p -> blockMode p >> life p)
