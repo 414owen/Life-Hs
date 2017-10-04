@@ -19,7 +19,7 @@ xToNum :: Char -> Int
 xToNum x = if x == 'x' then 1 else 0
 
 add2d :: Num a => [[a]] -> [[a]] -> [[a]]
-add2d lsts1 lsts2 = zipWith (zipWith (+)) lsts1 lsts2
+add2d = zipWith (zipWith (+))
 
 alive :: Char -> Int -> Char
 alive 'x' n | n == 2 = 'x'
@@ -27,24 +27,24 @@ alive 'x' n | n == 3 = 'x'
 alive '.' n | n == 3 = 'x'
 alive  _  _          = '.'
 
-nextBoard :: [[Char]] -> [[Int]] -> [[Char]]
-nextBoard board neighbours = zipWith (\linea lineb -> zipWith alive linea lineb) board neighbours
+nextBoard :: [String] -> [[Int]] -> [String]
+nextBoard = zipWith (zipWith alive)
 
 zeroMat :: [[a]] -> [[Int]]
-zeroMat lsts = map (map (const 0)) lsts
+zeroMat = map (map (const 0))
 
 -- [1, 2, 3, 4] -> [4, 1, 2, 3, 4]
 wraps :: [a] -> [a]
 wraps lst = last lst : lst
 
-neighboursInt :: [Char] -> [Int]
+neighboursInt :: String -> [Int]
 neighboursInt (a:aa:as) = xToNum a + xToNum aa : neighboursInt (aa:as)
-neighboursInt (a:[]) = []
+neighboursInt [a] = []
 neighboursInt _ = []
 
 -- Takes displaced rows list
-countNeighbours :: [[Char]] -> [[Int]]
-countNeighbours lsts = map neighboursInt lsts
+countNeighbours :: [String] -> [[Int]]
+countNeighbours = map neighboursInt
 
 -- [[1, 2, 3], [2, 3, 4], [3, 4, 5]] ->
 -- [[5, 3, 4, 5], [3, 1, 2, 3], [4, 2, 3, 4], [5, 3, 4, 5]]
@@ -53,23 +53,23 @@ shiftRows lsts = let newLists = map wraps lsts in
     last newLists : take (length newLists - 1) newLists
 
 rotations :: [[a]] -> [Int] -> [[[a]]]
-rotations lsts rots = map (\r -> rotateN r lsts) rots
+rotations lsts = map (`rotateN` lsts)
 
-neighbours :: [[Char]] -> [[Int]]
+neighbours :: [String] -> [[Int]]
 neighbours lsts = let rots = rotations lsts [0..3]
-                      rotationShifts = map shiftRows rots -- [[[Char]]]
+                      rotationShifts = map shiftRows rots -- [[String]]
                       neighbourRots = map countNeighbours rotationShifts
-                      neighboursUnRot = zipWith (flip rotateN) neighbourRots [0,(-1)..(-3)]
+                      neighboursUnRot = zipWith (flip rotateN) neighbourRots [0, 3, 2, 1]
                       neighbours = foldl add2d (zeroMat lsts) neighboursUnRot
                   in neighbours
 
-tick :: [[Char]] -> [[Char]]
+tick :: [String] -> [String]
 tick lsts = nextBoard lsts (neighbours lsts)
 
-life :: [[Char]] -> Int -> IO ()
+life :: [String] -> Int -> IO ()
 life lsts delay = threadDelay delay >> clearScreen >> putStrLn (intercalate "\n" lsts) >> hFlush stdout >> life (tick lsts) delay
 
-blockMode :: [[Char]] -> IO ()
+blockMode :: [String] -> IO ()
 blockMode p = let chars = length p * (length (head p) + 2) + 9 in
     hSetBuffering stdout (BlockBuffering (Just chars))
 
