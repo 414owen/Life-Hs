@@ -22,9 +22,9 @@ add2d :: Num a => [[a]] -> [[a]] -> [[a]]
 add2d = zipWith (zipWith (+))
 
 alive :: Char -> Int -> Char
-alive 'x' n | n == 2 = 'x'
-alive  _  n | n == 3 = 'x'
-alive  _  _          = '.'
+alive 'x' 2 = 'x'
+alive  _  3 = 'x'
+alive  _  _ = '.'
 
 nextBoard :: [String] -> [[Int]] -> [String]
 nextBoard = zipWith (zipWith alive)
